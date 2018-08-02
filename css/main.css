@@ -28,3 +28,12 @@ body{
     padding:1px;
     text-align: center;
 }
+
+#container-info-pokemon{
+    color:white;
+    font-size: 15px;
+    font-family: 'Hanalei Fill', cursive;
+}
+.format-info{
+    border: 2px solid white;
+}
