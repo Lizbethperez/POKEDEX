@@ -1,0 +1,30 @@
+
+body{
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+.container{
+    position:relative;
+}
+.background{
+    background-image: url("../assets/background3.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+#search-words{
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;   
+}
+.format-btn{
+    border-radius: 5px;
+    background:black;
+    height: 6vh;
+    color:white;
+    padding:1px;
+    text-align: center;
+}
