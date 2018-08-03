@@ -34,6 +34,14 @@ body{
     font-size: 15px;
     font-family: 'Hanalei Fill', cursive;
 }
-.format-info{
+.format-ul{
+    border: 2px solid white;
+    border-radius: 5%;
+    display: inline-block;
+    background-color: black;
+    width: 60%;
+    text-align: center;
+}
+#containerAllInformation{
     border: 2px solid white;
 }

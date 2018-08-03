@@ -85,23 +85,23 @@ function addPokemon(){
 
 $(document).ready(function () {
   const responseContainerInfoPokemon = $('#container-info-pokemon');
-  ajaxAllPokemons();
+  ajaxAllPokemons();//Se manda a llamar la funcion de busqueda del Api de Ajax con la Informacion Particular de Cada Pokemon.
   $("#submit-btn").click(function (event) {
+    $("#container").empty();
     event.preventDefault();
-    console.log("entro");
     $("#container-response-api").empty();
-    const searchWords = $("#search-words").val();
+    const searchWords = $("#search-words").val();//Se obtiene el Valor Ingresado por el Usuario en el Input
     ajaxPokemon(searchWords);
   });
 
   const ajaxPokemon = (searchWords) => {
     $.ajax({
-      url: 'https://pokeapi.co/api/v2/pokemon/' + searchWords,
+      url: 'https://pokeapi.co/api/v2/pokemon/' + searchWords,//Se hace la Busqueda En la Api por cada Pokemon.
       type: 'GET',
       datatype: 'json',
     })
       .done(function (response) {
-        //console.log(response);
+        console.log(response);
         const data = (response);
         addPokemon(data);
       })
@@ -111,7 +111,7 @@ $(document).ready(function () {
   }
   function ajaxAllPokemons() {
     $.ajax({
-      url: 'https://pokeapi.co/api/v2/pokemon/',
+      url: 'https://pokeapi.co/api/v2/pokemon/',//Se hace la Busqueda en la Api de Todos los Pokemons.
       type: 'GET',
       datatype: 'json',
     })
@@ -128,25 +128,27 @@ $(document).ready(function () {
   }
   
   function addPokemon(data) {
-    const responseContainerApi = $('#container-response-api');
+    const responseContainerApi = $('#container');
     console.log(data);
     let imagesPokemons = document.createElement('img');
     imagesPokemons.className = 'img-responsive';
-    imagesPokemons.style.width = '15em';
+    imagesPokemons.style.width = '10em';
     let image = data.sprites.front_default;
     imagesPokemons.src = image;
     responseContainerApi.append(imagesPokemons);
     printAllInfoPokemon(addName(data), addHabilities(data), addType(data));
+  
   }
   const printAllInfoPokemon = (addName, addHabilities, addType) => {
+    let containerForAllInformation=$("#containerAllInformation");
     let responseContainerInfoPokemon = $("#container");
     let ulElementContainer=document.createElement('ul');
     ulElementContainer.id="container-info-pokemon";
-    ulElementContainer.className="col s10 offset-s2";
+    ulElementContainer.className="format-ul";
     ulElementContainer.append(addName);
     ulElementContainer.append(addHabilities);
     ulElementContainer.append(addType);
-    responseContainerInfoPokemon.append(ulElementContainer);
+    responseContainerInfoPokemon.append(ulElementContainer)
   }
 
   const addName = (data) => {
@@ -162,6 +164,7 @@ $(document).ready(function () {
     for (let i = 0; i < data.abilities.length; i++) {
       pokemon.push(data.abilities[i].ability.name);
     }
+
     console.log(pokemon);
     li.innerText = 'habilidades: ' + pokemon;
     return li;
@@ -175,16 +178,12 @@ $(document).ready(function () {
   }
 
   function addAllPokemos(data){
-    let containerAllPokemos=$("#containerAllPikachu");
+    let containerAllPokemos=$("#containerAllPokemons");
     for (let i = 0; i < data.results.length; i++) {
       let getPokemonInformation=data.results[i].name;
       let getPokemonUrl=data.results[i].url;
-      let containerInformationPokemon=document.createElement('div');
-      let containerImagePokemon=document.createElement('img');
-      containerImagePokemon.src=getPokemonUrl;
-      containerAllPokemos.append(containerImagePokemon);
-      containerInformationPokemon.append(getPokemonInformation);
-      containerAllPokemos.append(containerInformationPokemon);
+      console.log(getPokemonUrl);
+      ajaxPokemon(getPokemonInformation);
     }
   }
 });
