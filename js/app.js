@@ -1,3 +1,105 @@
+
+$(document).ready(function () {
+  const responseContainerInfoPokemon = $('#container-info-pokemon');
+  ajaxAllPokemons();//Se manda a llamar la funcion de busqueda del Api de Ajax con la Informacion Particular de Cada Pokemon.
+  $("#submit-btn").click(function (event) {
+    $("#container").empty();//Se limpia el contender que tiene todos los contenedores
+    event.preventDefault();
+    $("#container-response-api").empty();// Se limpia el contenedor que contiene a cada imagen
+    const searchWords = $("#search-words").val();//Se obtiene el Valor Ingresado por el Usuario en el Input
+    ajaxPokemon(searchWords);
+  });
+
+  const ajaxPokemon = (searchWords) => {
+    $.ajax({
+      url: 'https://pokeapi.co/api/v2/pokemon/' + searchWords,//Se hace la Busqueda En la Api por cada Pokemon.
+      type: 'GET',
+      datatype: 'json',
+    })
+      .done(function (response) {
+        console.log(response);
+        const data = (response);
+        addPokemon(data);
+      })
+      .fail(function () {
+        console.log("error");
+      })
+  }
+  
+  function ajaxAllPokemons() {
+    $.ajax({
+      url: 'https://pokeapi.co/api/v2/pokemon/',//Se hace la Busqueda en la Api de Todos los Pokemons.
+      type: 'GET',
+      datatype: 'json',
+    })
+      .done(function (response) {
+        //console.log(response);
+        const data = (response);
+        console.log("todos los pokemons");
+        console.log(data);
+        addAllPokemos(data);
+      })
+      .fail(function () {
+        console.log("error");
+      })
+  }
+
+  function addPokemon(data) { // Se agrega la Imagen correspondiente a cada pokemon
+    const responseContainerApi = $('#container');
+    let imagesPokemons = document.createElement('img');
+    imagesPokemons.className = 'img-responsive';
+    imagesPokemons.style.width = '10em';
+    let image = data.sprites.front_default;
+    imagesPokemons.src = image;
+    responseContainerApi.append(imagesPokemons);
+    printAllInfoPokemon(addName(data), addHabilities(data), addType(data));
+
+  }
+  const printAllInfoPokemon = (addName, addHabilities, addType) => { //Se describe la Informacion de cada pokemon
+    let containerForAllInformation = $("#containerAllInformation");
+    let responseContainerInfoPokemon = $("#container");
+    let ulElementContainer = document.createElement('ul');
+    ulElementContainer.id = "container-info-pokemon";
+    ulElementContainer.className = "format-ul";
+    ulElementContainer.append(addName);
+    ulElementContainer.append(addHabilities);
+    ulElementContainer.append(addType);
+    responseContainerInfoPokemon.append(ulElementContainer)
+  }
+
+  const addName = (data) => { //Se busca la informacion del Nombre del pokemon
+    let infoName = document.createElement('li');
+    let namePokemon = data.name;
+    infoName.innerText = 'name: ' + namePokemon;
+    return infoName;
+  }
+
+  const addHabilities = (data) => { // Se busca la Informacion de las Habilidades de cada pokemon
+    let li = document.createElement('li');
+    const pokemon = [];
+    for (let i = 0; i < data.abilities.length; i++) {
+      pokemon.push(data.abilities[i].ability.name);
+    }
+    li.innerText = 'habilidades: ' + pokemon;
+    return li;
+  }
+  const addType = (data) => {//Se busca la informacion de cada pokemon
+    let type = document.createElement('li');
+    let typesPokemon = data.types[0].type.name;
+    type.innerText = 'type: ' + typesPokemon;
+    return type;
+  }
+
+  function addAllPokemos(data) {  //Se busca la Informacion de todos los pokemones 
+    let containerAllPokemos = $("#containerAllPokemons");
+    for (let i = 0; i < data.results.length; i++) {
+      let getPokemonInformation = data.results[i].name;
+      let getPokemonUrl = data.results[i].url;
+      ajaxPokemon(getPokemonInformation);
+    }
+  }
+});
+
 /* elementos que usaremos
 const form = document.getElementById('form');
 const searchWords = document.getElementById('search-words');
@@ -82,108 +184,3 @@ function addPokemon(){
 
  }
 */
-
-$(document).ready(function () {
-  const responseContainerInfoPokemon = $('#container-info-pokemon');
-  ajaxAllPokemons();//Se manda a llamar la funcion de busqueda del Api de Ajax con la Informacion Particular de Cada Pokemon.
-  $("#submit-btn").click(function (event) {
-    $("#container").empty();
-    event.preventDefault();
-    $("#container-response-api").empty();
-    const searchWords = $("#search-words").val();//Se obtiene el Valor Ingresado por el Usuario en el Input
-    ajaxPokemon(searchWords);
-  });
-
-  const ajaxPokemon = (searchWords) => {
-    $.ajax({
-      url: 'https://pokeapi.co/api/v2/pokemon/' + searchWords,//Se hace la Busqueda En la Api por cada Pokemon.
-      type: 'GET',
-      datatype: 'json',
-    })
-      .done(function (response) {
-        console.log(response);
-        const data = (response);
-        addPokemon(data);
-      })
-      .fail(function () {
-        console.log("error");
-      })
-  }
-  function ajaxAllPokemons() {
-    $.ajax({
-      url: 'https://pokeapi.co/api/v2/pokemon/',//Se hace la Busqueda en la Api de Todos los Pokemons.
-      type: 'GET',
-      datatype: 'json',
-    })
-      .done(function (response) {
-        //console.log(response);
-        const data = (response);
-        console.log("todos los pokemons");
-        console.log(data);
-        addAllPokemos(data);
-      })
-      .fail(function () {
-        console.log("error");
-      })
-  }
-  
-  function addPokemon(data) {
-    const responseContainerApi = $('#container');
-    console.log(data);
-    let imagesPokemons = document.createElement('img');
-    imagesPokemons.className = 'img-responsive';
-    imagesPokemons.style.width = '10em';
-    let image = data.sprites.front_default;
-    imagesPokemons.src = image;
-    responseContainerApi.append(imagesPokemons);
-    printAllInfoPokemon(addName(data), addHabilities(data), addType(data));
-  
-  }
-  const printAllInfoPokemon = (addName, addHabilities, addType) => {
-    let containerForAllInformation=$("#containerAllInformation");
-    let responseContainerInfoPokemon = $("#container");
-    let ulElementContainer=document.createElement('ul');
-    ulElementContainer.id="container-info-pokemon";
-    ulElementContainer.className="format-ul";
-    ulElementContainer.append(addName);
-    ulElementContainer.append(addHabilities);
-    ulElementContainer.append(addType);
-    responseContainerInfoPokemon.append(ulElementContainer)
-  }
-
-  const addName = (data) => {
-    let infoName = document.createElement('li');
-    let namePokemon = data.name;
-    infoName.innerText = 'name: ' + namePokemon;
-    return infoName;
-  }
-
-  const addHabilities = (data) => {
-    let li = document.createElement('li');
-    const pokemon = [];
-    for (let i = 0; i < data.abilities.length; i++) {
-      pokemon.push(data.abilities[i].ability.name);
-    }
-
-    console.log(pokemon);
-    li.innerText = 'habilidades: ' + pokemon;
-    return li;
-  }
-  const addType = (data) => {
-    let type = document.createElement('li');
-    let typesPokemon = data.types[0].type.name;
-    console.log(typesPokemon);
-    type.innerText = 'type: ' + typesPokemon;
-    return type;
-  }
-
-  function addAllPokemos(data){
-    let containerAllPokemos=$("#containerAllPokemons");
-    for (let i = 0; i < data.results.length; i++) {
-      let getPokemonInformation=data.results[i].name;
-      let getPokemonUrl=data.results[i].url;
-      console.log(getPokemonUrl);
-      ajaxPokemon(getPokemonInformation);
-    }
-  }
-});
