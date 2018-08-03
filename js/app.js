@@ -10,14 +10,14 @@ $(document).ready(function () {
     ajaxPokemon(searchWords);
   });
 
-  const ajaxPokemon = (searchWords) => {
+  const ajaxPokemon = (searchWords) => { //Esta funcion Busca en la API de cada uno de los pokemons.
     $.ajax({
       url: 'https://pokeapi.co/api/v2/pokemon/' + searchWords,//Se hace la Busqueda En la Api por cada Pokemon.
       type: 'GET',
       datatype: 'json',
     })
       .done(function (response) {
-        console.log(response);
+        //console.log(response);
         const data = (response);
         addPokemon(data);
       })
@@ -26,18 +26,16 @@ $(document).ready(function () {
       })
   }
   
-  function ajaxAllPokemons() {
+  function ajaxAllPokemons() { // Esta funcion hace la Busqueda en la API que contiene todos los pokemons.
     $.ajax({
       url: 'https://pokeapi.co/api/v2/pokemon/',//Se hace la Busqueda en la Api de Todos los Pokemons.
       type: 'GET',
       datatype: 'json',
     })
       .done(function (response) {
-        //console.log(response);
         const data = (response);
-        console.log("todos los pokemons");
-        console.log(data);
-        addAllPokemos(data);
+        //console.log(data);
+        addAllPokemos(data); // Se manda a llamar la Funcion que busca todos los pokemons. 
       })
       .fail(function () {
         console.log("error");
@@ -69,6 +67,7 @@ $(document).ready(function () {
 
   const addName = (data) => { //Se busca la informacion del Nombre del pokemon
     let infoName = document.createElement('li');
+    infoName.className="format-list-name";
     let namePokemon = data.name;
     infoName.innerText = 'name: ' + namePokemon;
     return infoName;
@@ -93,9 +92,9 @@ $(document).ready(function () {
   function addAllPokemos(data) {  //Se busca la Informacion de todos los pokemones 
     let containerAllPokemos = $("#containerAllPokemons");
     for (let i = 0; i < data.results.length; i++) {
-      let getPokemonInformation = data.results[i].name;
+      let getPokemonInformation = data.results[i].name;//Se busca cada uno de los pokemons.
       let getPokemonUrl = data.results[i].url;
-      ajaxPokemon(getPokemonInformation);
+      ajaxPokemon(getPokemonInformation);//Manda a llamar a la funcion que busca cada uno de los pokemons
     }
   }
 });
