@@ -49,3 +49,18 @@ body{
 .format-list-name{
     color:yellow;
 }
+#imagesFormatDesdtokp{
+    width: 10em;
+}
+
+@media screen and (min-width:990px){
+    #imagesFormatDesdtokp{
+        width: 20em;
+        display: block;
+        margin-left: 30%;
+    }
+    .format-ul{
+        width: 40%;
+        margin-left: 25%;
+    }
+}

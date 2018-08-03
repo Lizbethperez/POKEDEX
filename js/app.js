@@ -46,7 +46,8 @@ $(document).ready(function () {
     const responseContainerApi = $('#container');
     let imagesPokemons = document.createElement('img');
     imagesPokemons.className = 'img-responsive';
-    imagesPokemons.style.width = '10em';
+    imagesPokemons.id="imagesFormatDesdtokp"
+    //imagesPokemons.style.width = '10em';
     let image = data.sprites.front_default;
     imagesPokemons.src = image;
     responseContainerApi.append(imagesPokemons);
